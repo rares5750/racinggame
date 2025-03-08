@@ -18,17 +18,19 @@ let bestLapSec;
 let bestLapMs;
 let bestLap;
 
-const maxSpeed = 5;
+const maxSpeed = 8;
 
 function setup() {
 	new Canvas(750, 750);
 	displayMode('centered');
 
+	camera.zoom = 3;
+
 	walls = new Group();
 	walls.tile = "=";
 	walls.w = width/35;
 	walls.h = height/35;
-	walls.color = "white";
+	walls.color = "gray";
 	walls.collider = "s";
 	walls.strokeWeight = 0;
 
@@ -107,6 +109,7 @@ function setup() {
 
 function draw() {
 	background('black');
+	camera.on();
 
 	if(backwards){
 		playerCar.direction = playerCar.rotation + 180;
@@ -201,17 +204,22 @@ function draw() {
 		playerCar.direction -= 8.5 / ((playerCar.speed + 2)/2);
 		playerCar.rotation -= 8.5 / ((playerCar.speed + 2)/2);
 	}
+	allSprites.draw();
 	fill(255);
+	stroke(2);
 	textAlign(LEFT);
-	textSize(20);
-	text("Lap: " + lap, width/2 - 50, height/2 - 150)
-	text("Current Lap: " + minute + ":" + second + "." + millisecond, width/2-50, height/2-125);
+	textSize(10);
+	text("Lap: " + lap, camera.x - 115, camera.y - 110);
+	text("Current Lap: " + minute + ":" + second + "." + millisecond, camera.x - 115, camera.y-100);
 	if(previousLap){
-		text("Previous Lap: " + previousLap, width/2 - 50, height/2 - 100);
+		text("Previous Lap: " + previousLap, camera.x - 115, camera.y-90);
 	}
 	if(bestLap){
-		text("Best Lap: " + bestLap, width/2 - 50, height/2 - 75);
+		text("Best Lap: " + bestLap, camera.x - 115, camera.y-80);
 	}
+	camera.x = playerCar.x;
+	camera.y = playerCar.y;
+	camera.off();
 }
 
 function incrementTime(){
